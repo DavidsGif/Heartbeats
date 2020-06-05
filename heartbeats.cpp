@@ -9,11 +9,11 @@
 
 #define _USE_MATH_DEFINES
 
-/* change these 8 parameters to affect the shape */
-const double m_0 = 2.99;
-const double n1_0 = 0.38;
-const double n2_0 = 0.1;
-const double n3_0 = 2.5;
+/* change these 20 parameters to affect the shape */
+const double m_0[4] = {2.99, 2.99, 2.99, 2.99};
+const double n1_0[4] = {0.40, 0.39, 0.38, 0.38};
+const double n2_0[4] = {0.05, 0.06, 0.07, 0.1};
+const double n3_0[4] = {3.0, 2.85, 2.7, 2.5};
 
 const double m_ = 3.;
 const double n1_ = 0.36;
@@ -24,43 +24,46 @@ const double n3_ = 2.4;
 const int Quality = 40;
 
 /* change these 4 parameters to affect the period of heartbeats in each stage */
-double PERIOD_1 = 0.5;
-double PERIOD_2 = 1.25;
-double PERIOD_3 = 1.5;
-double PERIOD_4 = 2.0;
+const double PERIOD_1 = 0.25;
+const double PERIOD_2 = 0.35;
+const double PERIOD_3 = 0.5;
+const double PERIOD_4 = 1.0;
 
 /* these 3 to change size */
-double Zoom_x = 1.5;
-double Zoom_y = 1.5;
-double Zoom_z = 1.5;
+const double Zoom_x = 1.5;
+const double Zoom_y = 1.5;
+const double Zoom_z = 1.5;
 
 /* change these 4 parameters to affect the color of the heart in each stage */
-double COLOR_1 = 1.0f;
-double COLOR_2 = 0.85f;
-double COLOR_3 = 0.7f;
-double COLOR_4 = 0.4f;
+const double COLOR_1 = 1.0;
+const double COLOR_2 = 0.85;
+const double COLOR_3 = 0.70;
+const double COLOR_4 = 0.5;
+
+
 
 /* system parameters */
-double m = 3;
-double n1 = 0.5;
-double n2 = 0.5;
-double n3 = 3; 
+double m = m_0[0];
+double n1 = n1_0[0];
+double n2 = n2_0[0];
+double n3 = n3_0[0];
 
 
-double color = COLOR_1;
 
-double color_to_change = COLOR_1;
+double color = COLOR_3;
+
+double color_to_change = COLOR_3;
 double time_for_coloring = 0;
 double spent_time_for_coloring = 0;
 double speed_of_coloring = 0;
 
-int stage = 1;
-double period = PERIOD_1;
+int stage = 3;
+double period = PERIOD_3;
 
 
 bool is_opening = true;
 
-GLfloat light_diffuse[] = {(float)COLOR_1, 0.0, 0.0, 0.9};
+GLfloat light_diffuse[] = {(float)COLOR_3, 0.0, 0.0, 0.9};
 GLfloat light_position[] = {1.0, 1.0, 1.0, 0.0};
 
 
@@ -249,10 +252,10 @@ void updateHeart(sf::Clock* clock, double* time, sf::Sound* sound) {
 
   double t = *time / period;
 
-  m = m_0 + (m_ - m_0) * t;
-  n1 = n1_0 + (n1_ - n1_0) * t;
-  n2 = n2_0 + (n2_ - n2_0) * t;
-  n3 = n3_0 + (n3_ - n3_0) * t;
+  m = m_0[stage - 1] + (m_ - m_0[stage - 1]) * t;
+  n1 = n1_0[stage - 1] + (n1_ - n1_0[stage - 1]) * t;
+  n2 = n2_0[stage - 1] + (n2_ - n2_0[stage - 1]) * t;
+  n3 = n3_0[stage - 1] + (n3_ - n3_0[stage - 1]) * t;
 
 }
 
@@ -282,7 +285,7 @@ int main() {
 
   window.setVerticalSyncEnabled(true);
 
-  std::string TextInput = "";
+  std::string TextInput = "CASUAL";
 
   sf::Font font;
   font.loadFromFile("Arial.ttf");
